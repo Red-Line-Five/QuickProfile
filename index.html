@@ -1,36 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>QuickProfile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 40px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    .card {
+      background: #020617;
+      padding: 20px;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-  <h2>Upload profile.json</h2>
-  <input type="file" id="fileInput">
 
-  <div id="buttons"></div>
+  <h2>QuickProfile</h2>
+  <div class="card" id="buttons"></div>
 
   <script>
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = function() {
-        const data = JSON.parse(reader.result);
-        const container = document.getElementById("buttons");
-        container.innerHTML = "";
+    const profile = {
+      "Full Name": "Your Name",
+      "Email": "your@email.com",
+      "Phone": "+96100000000",
+      "YouTube": "https://youtube.com/@yourchannel",
+      "LinkedIn": "https://linkedin.com/in/yourname",
+      "Facebook": "https://facebook.com/yourname",
+      "Instagram": "https://instagram.com/yourname",
+      "Website": "https://yourwebsite.com"
+    };
 
-        for (let key in data) {
-          const btn = document.createElement("button");
-          btn.innerText = "Copy " + key;
-          btn.onclick = () => {
-            navigator.clipboard.writeText(data[key]);
-            alert(key + " copied!");
-          };
-          container.appendChild(btn);
-          container.appendChild(document.createElement("br"));
-        }
+    const container = document.getElementById("buttons");
+
+    for (let key in profile) {
+      const btn = document.createElement("button");
+      btn.innerText = "Copy " + key;
+      btn.onclick = () => {
+        navigator.clipboard.writeText(profile[key]);
+        alert(key + " copied!");
       };
-      reader.readAsText(file);
-    });
+      container.appendChild(btn);
+    }
   </script>
+
 </body>
 </html>
