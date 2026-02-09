@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QuickProfile</title>
+</head>
+<body>
+  <h2>Upload profile.json</h2>
+  <input type="file" id="fileInput">
+
+  <div id="buttons"></div>
+
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function() {
+        const data = JSON.parse(reader.result);
+        const container = document.getElementById("buttons");
+        container.innerHTML = "";
+
+        for (let key in data) {
+          const btn = document.createElement("button");
+          btn.innerText = "Copy " + key;
+          btn.onclick = () => {
+            navigator.clipboard.writeText(data[key]);
+            alert(key + " copied!");
+          };
+          container.appendChild(btn);
+          container.appendChild(document.createElement("br"));
+        }
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>
