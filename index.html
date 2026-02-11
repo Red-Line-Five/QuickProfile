@@ -6,35 +6,52 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #0f172a;
+      background: linear-gradient(135deg, #0f172a, #020617);
       color: #e5e7eb;
       padding: 40px;
-    }
-    h2 {
-      margin-bottom: 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .card {
       background: #020617;
-      padding: 20px;
-      max-width: 400px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #000;
+      padding: 25px;
+      max-width: 420px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+    h2 {
+      margin-bottom: 15px;
+      text-align: center;
     }
     button {
       width: 100%;
-      padding: 10px;
-      margin: 6px 0;
+      padding: 12px;
+      margin: 8px 0;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 14px;
+      background: #1e293b;
+      color: #e5e7eb;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    .copied {
+      background: #16a34a !important;
     }
   </style>
 </head>
 <body>
 
-  <h2>QuickProfile</h2>
-  <div class="card" id="buttons"></div>
+  <div class="card">
+    <h2>QuickProfile</h2>
+    <div id="buttons"></div>
+  </div>
 
   <script>
     const profile = {
@@ -52,10 +69,16 @@
 
     for (let key in profile) {
       const btn = document.createElement("button");
-      btn.innerText = "Copy " + key;
-      btn.onclick = () => {
-        navigator.clipboard.writeText(profile[key]);
-        alert(key + " copied!");
+      btn.innerText = "📋 Copy " + key;
+      btn.onclick = async () => {
+        await navigator.clipboard.writeText(profile[key]);
+        btn.classList.add("copied");
+        btn.innerText = "✅ Copied " + key;
+
+        setTimeout(() => {
+          btn.classList.remove("copied");
+          btn.innerText = "📋 Copy " + key;
+        }, 1200);
       };
       container.appendChild(btn);
     }
