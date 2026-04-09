@@ -2,88 +2,466 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>QuickProfile</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080c14;
+      --surface: #0e1420;
+      --surface2: #141c2e;
+      --border: rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.12);
+      --text: #f0f4ff;
+      --text2: #7a8aaa;
+      --text3: #3d4d6a;
+      --accent: #4f7cff;
+      --accent2: #7c5cfc;
+      --green: #22c55e;
+      --green-bg: rgba(34,197,94,0.1);
+      --red: #f87171;
+      --radius: 14px;
+      --radius-sm: 9px;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #020617);
-      color: #e5e7eb;
-      padding: 40px;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 32px 16px;
     }
+
+    .page {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    /* ---- CARD ---- */
     .card {
-      background: #020617;
-      padding: 25px;
-      max-width: 420px;
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 12px;
     }
-    h2 {
-      margin-bottom: 15px;
-      text-align: center;
+
+    /* ---- HEADER ---- */
+    .header {
+      padding: 24px 22px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
     }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 8px;
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      flex-shrink: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .header-info h1 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .header-info p {
+      font-size: 13px;
+      color: var(--text2);
+      margin-top: 2px;
+    }
+
+    /* ---- SECTION ---- */
+    .section {
+      padding: 16px 18px;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+
+    /* ---- BUTTONS ---- */
+    .btn-row {
+      display: flex;
+      gap: 6px;
+      margin: 5px 0;
+    }
+
+    .btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 13px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
       cursor: pointer;
+      transition: all 0.18s;
+      text-align: left;
+    }
+
+    .btn:hover {
+      background: #1a2540;
+      border-color: var(--border2);
+    }
+
+    .btn.copied {
+      border-color: rgba(34,197,94,0.4);
+      color: var(--green);
+      background: var(--green-bg);
+    }
+
+    .btn-icon {
+      font-size: 15px;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .btn-label { flex: 1; }
+
+    .btn-copy-icon {
+      margin-left: auto;
+      opacity: 0.3;
+      font-size: 13px;
+      transition: opacity 0.18s;
+    }
+
+    .btn:hover .btn-copy-icon { opacity: 0.7; }
+    .btn.copied .btn-copy-icon { opacity: 0; }
+
+    .btn-open {
+      flex: 0 0 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text2);
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.18s;
+      text-decoration: none;
+    }
+
+    .btn-open:hover {
+      background: #1a2540;
+      border-color: var(--border2);
+      color: var(--accent);
+    }
+
+    /* ---- CONTACT FORM CARD ---- */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .form-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      letter-spacing: -0.2px;
+    }
+
+    .form-subtitle {
+      font-size: 13px;
+      color: var(--text2);
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
       font-size: 14px;
-      background: #1e293b;
-      color: #e5e7eb;
-      transition: 0.2s;
+      padding: 10px 13px;
+      outline: none;
+      transition: border-color 0.18s;
+      resize: none;
     }
-    button:hover {
-      background: #2563eb;
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text3);
     }
-    .copied {
-      background: #16a34a !important;
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: rgba(79,124,255,0.5);
+    }
+
+    .form-group textarea {
+      height: 100px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-send {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: opacity 0.18s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-send:hover { opacity: 0.9; }
+    .btn-send:active { transform: scale(0.99); }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 20px 0 8px;
+    }
+
+    .form-success .success-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .form-success p {
+      font-size: 14px;
+      color: var(--text2);
+    }
+
+    .form-success strong {
+      display: block;
+      font-size: 16px;
+      color: var(--green);
+      margin-bottom: 4px;
     }
   </style>
 </head>
 <body>
 
+<div class="page">
+
+  <!-- Profile Card -->
   <div class="card">
-    <h2>QuickProfile</h2>
-    <div id="buttons"></div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="avatar" id="avatarEl">YN</div>
+      <div class="header-info">
+        <h1 id="nameDisplay">Your Name</h1>
+        <p>QuickProfile</p>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="section" id="contactSection">
+      <p class="section-label">Contact</p>
+    </div>
+
+    <!-- Social Section -->
+    <div class="section" id="socialSection">
+      <p class="section-label">Social</p>
+    </div>
+
   </div>
 
-  <script>
-    const profile = {
-      "Full Name": "Your Name",
-      "Email": "your@email.com",
-      "Phone": "+96100000000",
-       "Addsress": "street, city, country",
-      "YouTube": "https://youtube.com/@yourchannel",
-      "LinkedIn": "https://linkedin.com/in/yourname",
-      "Facebook": "https://facebook.com/yourname",
-      "Instagram": "https://instagram.com/yourname",
-      "Website": "https://yourwebsite.com"
+  <!-- Contact Form Card -->
+  <div class="form-card">
+    <p class="form-title">Send a message</p>
+    <p class="form-subtitle">Got something to say? I'll get back to you.</p>
+
+    <div id="formInner">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="senderName" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="senderEmail" placeholder="your@email.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="senderMsg" placeholder="What's on your mind?"></textarea>
+      </div>
+      <button class="btn-send" onclick="sendMail()">
+        <span>✉</span> Send Message
+      </button>
+    </div>
+
+    <div class="form-success" id="formSuccess">
+      <div class="success-icon">✅</div>
+      <strong>Message sent!</strong>
+      <p>Your mail app should have opened. Thanks for reaching out.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const YOUR_EMAIL = "charbel.feghaly.rl@gmail.com";
+
+  const profile = {
+    contact: [
+      { label: "Full Name",  value: "Your Name",           icon: "👤", link: false },
+      { label: "Email",      value: "your@email.com",       icon: "✉️", link: "mailto:your@email.com" },
+      { label: "Phone",      value: "+96100000000",          icon: "📞", link: "tel:+96100000000" },
+      { label: "Address",    value: "Street, City, Country", icon: "📍", link: false },
+    ],
+    social: [
+      { label: "YouTube",   value: "https://youtube.com/@yourchannel",   icon: "▶️" },
+      { label: "LinkedIn",  value: "https://linkedin.com/in/yourname",   icon: "💼" },
+      { label: "Facebook",  value: "https://facebook.com/yourname",      icon: "🔵" },
+      { label: "Instagram", value: "https://instagram.com/yourname",     icon: "📸" },
+      { label: "Website",   value: "https://yourwebsite.com",            icon: "🌐" },
+    ]
+  };
+
+  function initials(name) {
+    return name.split(" ").map(w => w[0]).slice(0,2).join("").toUpperCase();
+  }
+
+  document.getElementById("avatarEl").textContent = initials(profile.contact[0].value);
+  document.getElementById("nameDisplay").textContent = profile.contact[0].value;
+
+  function copyBtn(item) {
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.innerHTML = `<span class="btn-icon">${item.icon}</span><span class="btn-label">${item.label}</span><span class="btn-copy-icon">⎘</span>`;
+    btn.onclick = async () => {
+      await navigator.clipboard.writeText(item.value);
+      btn.classList.add("copied");
+      btn.querySelector(".btn-label").textContent = "Copied!";
+      setTimeout(() => {
+        btn.classList.remove("copied");
+        btn.querySelector(".btn-label").textContent = item.label;
+      }, 1500);
     };
+    return btn;
+  }
 
-    const container = document.getElementById("buttons");
+  function buildContact(containerId, items) {
+    const sec = document.getElementById(containerId);
+    items.forEach(item => {
+      const row = document.createElement("div");
+      row.className = "btn-row";
+      row.appendChild(copyBtn(item));
+      if (item.link) {
+        const open = document.createElement("a");
+        open.className = "btn-open";
+        open.href = item.link;
+        open.title = "Open";
+        open.textContent = "↗";
+        row.appendChild(open);
+      }
+      sec.appendChild(row);
+    });
+  }
 
-    for (let key in profile) {
-      const btn = document.createElement("button");
-      btn.innerText = "📋 Copy " + key;
-      btn.onclick = async () => {
-        await navigator.clipboard.writeText(profile[key]);
-        btn.classList.add("copied");
-        btn.innerText = "✅ Copied " + key;
+  function buildSocial(containerId, items) {
+    const sec = document.getElementById(containerId);
+    items.forEach(item => {
+      const row = document.createElement("div");
+      row.className = "btn-row";
+      row.appendChild(copyBtn(item));
+      const open = document.createElement("a");
+      open.className = "btn-open";
+      open.href = item.value;
+      open.target = "_blank";
+      open.rel = "noopener noreferrer";
+      open.title = "Open";
+      open.textContent = "↗";
+      row.appendChild(open);
+      sec.appendChild(row);
+    });
+  }
 
-        setTimeout(() => {
-          btn.classList.remove("copied");
-          btn.innerText = "📋 Copy " + key;
-        }, 1200);
-      };
-      container.appendChild(btn);
+  buildContact("contactSection", profile.contact);
+  buildSocial("socialSection", profile.social);
+
+  function sendMail() {
+    const name    = document.getElementById("senderName").value.trim();
+    const email   = document.getElementById("senderEmail").value.trim();
+    const message = document.getElementById("senderMsg").value.trim();
+
+    if (!name || !email || !message) {
+      alert("Please fill in all fields.");
+      return;
     }
-  </script>
+
+    const subject = encodeURIComponent("Message from " + name);
+    const body    = encodeURIComponent(
+      "Name: " + name + "\nEmail: " + email + "\n\n" + message
+    );
+
+    window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
+
+    document.getElementById("formInner").style.display = "none";
+    document.getElementById("formSuccess").style.display = "block";
+  }
+</script>
 
 </body>
 </html>
